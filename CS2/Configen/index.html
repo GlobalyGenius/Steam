@@ -1,0 +1,2955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONFIGEN - CS2 Config Builder by Globaly Genius</title>
+    <meta name="description" content="CONFIGEN - Powerful drag and drop config builder for CS2 with binds, aliases and advanced customization">
+    
+    <!-- SEO optimization -->
+    <meta property="og:title" content="CONFIGEN - CS2 Config Builder by Globaly Genius">
+    <meta property="og:description" content="CONFIGEN - Powerful drag and drop config builder for CS2 with binds, aliases and advanced customization">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://globalygenius.github.io">
+    <meta property="og:image" content="https://globalygenius.github.io/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CONFIGEN - CS2 Config Builder by Globaly Genius">
+    <meta name="twitter:description" content="CONFIGEN - Powerful drag and drop config builder for CS2 with binds, aliases and advanced customization">
+    <meta name="twitter:image" content="https://globalygenius.github.io/twitter-image.jpg">
+    <meta name="keywords" content="CONFIGEN, CS2, Config Builder, Binds, Aliases, Counter-Strike 2, Globaly Genius">
+    <link rel="canonical" href="https://globalygenius.github.io">
+    <meta name="robots" content="index, follow">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000100">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CONFIGEN">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+    
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #8A2BE2;
+            --primary-light: #9b45f5;
+            --primary-dark: #6a1cb5;
+            --secondary: #00CED1;
+            --secondary-light: #20e0e3;
+            --secondary-dark: #00a5a8;
+            --accent: #FF6B6B;
+            --rainbow-1: #FF6B6B;
+            --rainbow-2: #FF9E6B;
+            --rainbow-3: #FFD166;
+            --rainbow-4: #06D6A0;
+            --rainbow-5: #118AB2;
+            --rainbow-6: #073B4C;
+            --dark: #000100;
+            --darker: #000000;
+            --light: #f8f9fa;
+            --light-gray: #e9ecef;
+            --gray: #6c757d;
+            --dark-gray: #495057;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --border-radius: 16px;
+            --border-radius-lg: 24px;
+            --border-radius-sm: 8px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.25);
+            --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.35);
+            --transition: all 0.3s ease;
+            --transition-slow: all 0.5s ease;
+            --header-height: 80px;
+            --mobile-nav-height: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Poppins', 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            line-height: 1.7;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(138, 43, 226, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 206, 209, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.05) 0%, transparent 30%);
+            padding-bottom: var(--mobile-nav-height);
+            min-height: 100%;
+            position: relative;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Tab System */
+        .tabs-container {
+            display: none;
+            min-height: calc(100vh - var(--header-height) - var(--mobile-nav-height));
+            padding-top: calc(var(--header-height) + 2rem);
+            padding-bottom: 2rem;
+        }
+
+        .tabs-container.active {
+            display: block;
+        }
+
+        /* Header & Navigation */
+        header {
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(0, 1, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            height: var(--header-height);
+        }
+
+        .header-scrolled {
+            padding: 0.5rem 0;
+            background: rgba(0, 1, 0, 0.98);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--light);
+            text-decoration: none;
+            transition: var(--transition);
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            transition: var(--transition);
+            filter: drop-shadow(0 0 10px rgba(138, 43, 226, 0.5));
+        }
+
+        .logo:hover .logo-icon {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            color: var(--secondary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: var(--secondary);
+        }
+
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Language Selector */
+        .language-selector {
+            position: relative;
+        }
+
+        .language-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .language-toggle:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--dark);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            padding: 0.5rem 0;
+            min-width: 150px;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition);
+            z-index: 1001;
+        }
+
+        .language-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .language-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: var(--light);
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .language-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .language-flag {
+            font-size: 1.2rem;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: rotate(30deg);
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition);
+        }
+
+        .nav-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mobile Bottom Navigation */
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 1, 0, 0.98);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 999;
+            height: var(--mobile-nav-height);
+        }
+
+        .mobile-nav-content {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100%;
+            padding: 0 10px;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            padding: 8px 5px;
+            text-decoration: none;
+            color: var(--light);
+            transition: var(--transition);
+            border-radius: var(--border-radius-sm);
+            max-width: 80px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: inherit;
+            touch-action: manipulation;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--secondary);
+            background: rgba(0, 206, 209, 0.1);
+        }
+
+        .mobile-nav-item:hover {
+            color: var(--secondary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .mobile-nav-icon {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+            transition: var(--transition);
+        }
+
+        .mobile-nav-item.active .mobile-nav-icon {
+            transform: scale(1.1);
+        }
+
+        .mobile-nav-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* Main Builder Section */
+        .builder {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 50%, rgba(138, 43, 226, 0.1) 100%);
+            padding-top: var(--header-height);
+        }
+
+        .builder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 206, 209, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 107, 107, 0.05) 0%, transparent 50%);
+            z-index: 1;
+        }
+
+        .builder-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 2rem;
+            align-items: start;
+            min-height: 70vh;
+        }
+
+        /* Components Panel */
+        .components-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-lg);
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .components-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .component-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            cursor: grab;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .component-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .component-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: var(--transition-slow);
+        }
+
+        .component-item:hover::before {
+            left: 100%;
+        }
+
+        .component-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .component-description {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Workspace */
+        .workspace {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-lg);
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .workspace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .workspace-title {
+            font-size: 1.5rem;
+            color: var(--light);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .workspace-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .workspace-content {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--border-radius);
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            min-height: 400px;
+            transition: var(--transition);
+        }
+
+        .workspace-content.active-drop {
+            border-color: var(--secondary);
+            background: rgba(0, 206, 209, 0.05);
+        }
+
+        .config-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            cursor: move;
+            position: relative;
+        }
+
+        .config-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .config-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .config-item-name {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .config-item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .config-item-code {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--border-radius-sm);
+            padding: 0.75rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin-top: 0.5rem;
+        }
+
+        .empty-workspace {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--gray);
+            text-align: center;
+        }
+
+        .empty-workspace-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Preview Panel */
+        .preview-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-lg);
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-title {
+            font-size: 1.2rem;
+            color: var(--light);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .preview-content {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            min-height: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .config-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .config-stat {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .config-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .config-stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Sections */
+        .section {
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--light);
+            font-weight: 800;
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 4rem;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .section-accent {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+            font-weight: 700;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .feature-description {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 4rem 0 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+        }
+
+        .footer-link:hover {
+            color: var(--secondary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--light);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--secondary);
+            z-index: 1000;
+            animation: slideIn 0.5s ease-out;
+            max-width: 300px;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .notification.success {
+            border-left-color: var(--success);
+        }
+
+        .notification.warning {
+            border-left-color: var(--warning);
+        }
+
+        .notification.error {
+            border-left-color: var(--danger);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* Light Theme */
+        body.theme-light {
+            --dark: #f8f9fa;
+            --darker: #e9ecef;
+            --light: #000100;
+            --light-gray: #dee2e6;
+            --gray: #6c757d;
+            --dark-gray: #343a40;
+            background: var(--dark);
+            color: var(--light);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(138, 43, 226, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 206, 209, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.05) 0%, transparent 30%);
+        }
+
+        body.theme-light header {
+            background: rgba(248, 249, 250, 0.95);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        body.theme-light .header-scrolled {
+            background: rgba(248, 249, 250, 0.98);
+        }
+
+        body.theme-light .builder {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 50%, rgba(138, 43, 226, 0.1) 100%);
+        }
+
+        body.theme-light .components-panel,
+        body.theme-light .workspace,
+        body.theme-light .preview-panel {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.1);
+            color: var(--light);
+        }
+
+        body.theme-light .component-item,
+        body.theme-light .config-item,
+        body.theme-light .feature {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.theme-light .component-item:hover,
+        body.theme-light .config-item:hover,
+        body.theme-light .feature:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        body.theme-light .theme-toggle {
+            background: rgba(0, 0, 0, 0.1);
+            border-color: rgba(0, 0, 0, 0.2);
+            color: var(--light);
+        }
+
+        body.theme-light footer {
+            background: rgba(233, 236, 239, 0.5);
+            color: var(--light);
+        }
+
+        body.theme-light .social-link {
+            background: rgba(0, 0, 0, 0.1);
+            border-color: rgba(0, 0, 0, 0.2);
+            color: var(--light);
+        }
+
+        body.theme-light .social-link:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        body.theme-light .nav-link,
+        body.theme-light .footer-link {
+            color: var(--light);
+        }
+
+        body.theme-light .nav-link:hover,
+        body.theme-light .footer-link:hover {
+            color: var(--secondary);
+        }
+
+        body.theme-light .section-title,
+        body.theme-light .about-text h3 {
+            color: var(--light);
+        }
+
+        body.theme-light .about-text p {
+            color: rgba(0, 1, 0, 0.8);
+        }
+
+        body.theme-light .section-subtitle {
+            color: var(--gray);
+        }
+
+        body.theme-light .copyright {
+            color: rgba(0, 1, 0, 0.5);
+        }
+
+        body.theme-light .notification {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--light);
+            border-left: 4px solid var(--secondary);
+        }
+
+        body.theme-light .mobile-nav {
+            background: rgba(248, 249, 250, 0.98);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        body.theme-light .mobile-nav-item {
+            color: var(--light);
+        }
+
+        body.theme-light .mobile-nav-item.active {
+            color: var(--secondary);
+            background: rgba(0, 206, 209, 0.1);
+        }
+
+        body.theme-light .mobile-nav-item:hover {
+            color: var(--secondary);
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Loading Animation */
+        .loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            z-index: 9999;
+            transition: width 0.3s ease;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+            gap: 0.5rem;
+            touch-action: manipulation;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: var(--transition-slow);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--light);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-success:hover {
+            background: #34ce57;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-danger:hover {
+            background: #e4606d;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn:disabled:hover {
+            transform: none;
+            background: var(--primary);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        /* Config Form Styles */
+        .config-form {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--light);
+        }
+
+        .form-select, .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--light);
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .form-select:focus, .form-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(0, 206, 209, 0.2);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: var(--header-height);
+                left: 0;
+                right: 0;
+                background: rgba(0, 1, 0, 0.98);
+                flex-direction: column;
+                padding: 2rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+                box-shadow: var(--shadow-xl);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(20px);
+                gap: 1.5rem;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .nav-toggle {
+                display: block;
+            }
+            
+            .builder-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .components-panel, .preview-panel {
+                max-height: 300px;
+            }
+
+            .workspace {
+                min-height: 400px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .language-dropdown {
+                right: auto;
+                left: 0;
+            }
+
+            .config-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            /* Fix light theme on mobile */
+            body.theme-light .nav-links {
+                background: rgba(248, 249, 250, 0.98);
+                border-top: 1px solid rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section {
+                padding: 80px 0;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .workspace-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .workspace-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .workspace {
+                padding: 1rem;
+            }
+
+            .components-panel, .preview-panel {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="theme-dark">
+    <!-- Loading Bar -->
+    <div class="loading-bar" id="loadingBar"></div>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <span class="logo-icon">🎮</span>
+                    <span>CONFIGEN</span>
+                </a>
+                
+                <nav class="nav-links" id="navLinks">
+                    <a href="#builder" class="nav-link active" data-tab="builder">Builder</a>
+                    <a href="#templates" class="nav-link" data-tab="templates">Templates</a>
+                    <a href="#guides" class="nav-link" data-tab="guides">Guides</a>
+                    <a href="#about" class="nav-link" data-tab="about">About</a>
+                    
+                    <!-- Language Selector -->
+                    <div class="language-selector">
+                        <button class="language-toggle" id="languageToggle">
+                            <span class="language-flag">🌐</span>
+                            <span>EN</span>
+                        </button>
+                        <div class="language-dropdown" id="languageDropdown">
+                            <a href="#" class="language-option" data-lang="en">
+                                <span class="language-flag">🇺🇸</span>
+                                <span>English</span>
+                            </a>
+                            <a href="#" class="language-option" data-lang="ru">
+                                <span class="language-flag">🇷🇺</span>
+                                <span>Русский</span>
+                            </a>
+                            <a href="#" class="language-option" data-lang="be">
+                                <span class="language-flag">🇧🇾</span>
+                                <span>Беларуская</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Theme Toggle -->
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                        🌙
+                    </button>
+                </nav>
+                
+                <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Navigation menu">
+                    ☰
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-content">
+            <button class="mobile-nav-item active" data-tab="builder">
+                <div class="mobile-nav-icon">⚙️</div>
+                <div class="mobile-nav-label">Builder</div>
+            </button>
+            <button class="mobile-nav-item" data-tab="templates">
+                <div class="mobile-nav-icon">📋</div>
+                <div class="mobile-nav-label">Templates</div>
+            </button>
+            <button class="mobile-nav-item" data-tab="guides">
+                <div class="mobile-nav-icon">📚</div>
+                <div class="mobile-nav-label">Guides</div>
+            </button>
+            <button class="mobile-nav-item" id="mobileThemeToggle">
+                <div class="mobile-nav-icon">🌙</div>
+                <div class="mobile-nav-label">Theme</div>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Builder Tab -->
+    <section id="builder" class="tabs-container active">
+        <div class="container">
+            <div class="builder-content">
+                <!-- Components Panel -->
+                <div class="components-panel">
+                    <h3 class="panel-title">
+                        <span>🧩</span> Config Components
+                    </h3>
+                    <div class="components-list" id="componentsList">
+                        <!-- Components will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Workspace -->
+                <div class="workspace">
+                    <div class="workspace-header">
+                        <h3 class="workspace-title">
+                            <span>🛠️</span> Config Workspace
+                        </h3>
+                        <div class="workspace-actions">
+                            <button class="btn btn-primary btn-sm" id="exportConfig">
+                                <span>📥</span> Export
+                            </button>
+                            <button class="btn btn-secondary btn-sm" id="clearWorkspace">
+                                <span>🗑️</span> Clear
+                            </button>
+                        </div>
+                    </div>
+                    <div class="workspace-content" id="workspaceContent">
+                        <div class="empty-workspace">
+                            <div class="empty-workspace-icon">⬇️</div>
+                            <h3>Drag components here</h3>
+                            <p>Start building your CS2 config by dragging components from the left panel</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Preview Panel -->
+                <div class="preview-panel">
+                    <div class="preview-header">
+                        <h3 class="preview-title">
+                            <span>👁️</span> Config Preview
+                        </h3>
+                        <button class="btn btn-success btn-sm" id="copyConfig">
+                            <span>📋</span> Copy
+                        </button>
+                    </div>
+                    <div class="preview-content" id="previewContent">
+                        // Your config will appear here
+                    </div>
+                    <div class="config-stats">
+                        <div class="config-stat">
+                            <div class="config-stat-value" id="bindCount">0</div>
+                            <div class="config-stat-label">Binds</div>
+                        </div>
+                        <div class="config-stat">
+                            <div class="config-stat-value" id="aliasCount">0</div>
+                            <div class="config-stat-label">Aliases</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Templates Tab -->
+    <section id="templates" class="tabs-container">
+        <div class="container">
+            <h2 class="section-title">
+                <span>Config</span> <span class="section-accent">Templates</span>
+            </h2>
+            <p class="section-subtitle">
+                Start with pre-built config templates for different playstyles and preferences
+            </p>
+            
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-title">AWP Specialist</div>
+                    <div class="feature-description">Optimized for sniping with quick weapon switches and jump-throw binds</div>
+                    <button class="btn btn-primary" style="margin-top: 1rem;" data-template="awp">Load Template</button>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⚔️</div>
+                    <div class="feature-title">Rifle Master</div>
+                    <div class="feature-description">Perfect for riflers with spray control helpers and utility binds</div>
+                    <button class="btn btn-primary" style="margin-top: 1rem;" data-template="rifle">Load Template</button>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🏃</div>
+                    <div class="feature-title">Entry Fragger</div>
+                    <div class="feature-description">Aggressive setup with quick peeking and movement optimization</div>
+                    <button class="btn btn-primary" style="margin-top: 1rem;" data-template="entry">Load Template</button>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🛡️</div>
+                    <div class="feature-title">Support Player</div>
+                    <div class="feature-description">Utility-focused with smoke lineups and team communication binds</div>
+                    <button class="btn btn-primary" style="margin-top: 1rem;" data-template="support">Load Template</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guides Tab -->
+    <section id="guides" class="tabs-container">
+        <div class="container">
+            <h2 class="section-title">
+                <span>CS2 Config</span> <span class="section-accent">Guides</span>
+            </h2>
+            <p class="section-subtitle">
+                Learn how to create effective configs and optimize your CS2 experience
+            </p>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Understanding CS2 Binds and Aliases</h3>
+                    
+                    <p>
+                        Binds and aliases are powerful tools in CS2 that allow you to customize your gameplay experience.
+                        With CONFIGEN, you can easily create complex configurations without needing to remember syntax.
+                    </p>
+                    
+                    <p>
+                        <strong>Binds</strong> assign actions to specific keys. For example, you can bind a key to buy weapons,
+                        throw grenades in specific ways, or execute complex movement sequences.
+                    </p>
+                    
+                    <p>
+                        <strong>Aliases</strong> are custom commands that can execute multiple actions with a single keypress.
+                        They're perfect for creating sophisticated utility sequences or movement tricks.
+                    </p>
+                    
+                    <div class="features-grid">
+                        <div class="feature">
+                            <div class="feature-icon">⌨️</div>
+                            <div class="feature-title">Key Binding</div>
+                            <div class="feature-description">Assign actions to any key on your keyboard</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">🔄</div>
+                            <div class="feature-title">Alias Chains</div>
+                            <div class="feature-description">Create sequences of commands that execute in order</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-text">
+                    <h3>Best Practices</h3>
+                    
+                    <p>
+                        • Use clear, descriptive names for your aliases<br>
+                        • Test your config in a private server before using in competitive<br>
+                        • Keep a backup of your previous config<br>
+                        • Use comments in your config to remember what each bind does<br>
+                        • Optimize for your specific playstyle and preferences
+                    </p>
+                    
+                    <h3>Common Config Examples</h3>
+                    
+                    <p>
+                        <strong>Jump Throw Bind:</strong><br>
+                        <code>alias "+jumpthrow" "+jump;-attack"<br>alias "-jumpthrow" "-jump"<br>bind "t" "+jumpthrow"</code>
+                    </p>
+                    
+                    <p>
+                        <strong>Buy Binds:</strong><br>
+                        <code>bind "F1" "buy ak47; buy m4a1_silencer"<br>bind "F2" "buy vesthelm; buy defuser"</code>
+                    </p>
+                    
+                    <p>
+                        <strong>Practice Config:</strong><br>
+                        <code>bind "n" "noclip"<br>bind "b" "bot_kick; bot_add ct; bot_add t"</code>
+                    </p>
+
+                    <h3>Steam Guide Reference</h3>
+                    <p>
+                        For detailed Steam configuration guides and official documentation, visit:
+                        <a href="https://help.steampowered.com" target="_blank" style="color: var(--secondary);">Steam Support</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Tab -->
+    <section id="about" class="tabs-container">
+        <div class="container">
+            <h2 class="section-title">
+                <span>About</span> <span class="section-accent">CONFIGEN</span>
+            </h2>
+            <p class="section-subtitle">
+                The most powerful drag and drop config builder for CS2
+            </p>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>What is CONFIGEN?</h3>
+                    
+                    <p>
+                        CONFIGEN is an intuitive drag and drop config builder for Counter-Strike 2 that makes creating
+                        complex binds and aliases accessible to everyone. No more memorizing syntax or debugging config files manually.
+                    </p>
+                    
+                    <p>
+                        Whether you're a casual player looking to optimize your controls or a competitive player
+                        seeking every advantage, CONFIGEN provides the tools you need to create the perfect config.
+                    </p>
+                    
+                    <div class="features-grid">
+                        <div class="feature">
+                            <div class="feature-icon">🧩</div>
+                            <div class="feature-title">Drag & Drop</div>
+                            <div class="feature-description">Intuitive visual config building</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">📋</div>
+                            <div class="feature-title">Templates</div>
+                            <div class="feature-description">Pre-built configs for different playstyles</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">👁️</div>
+                            <div class="feature-title">Live Preview</div>
+                            <div class="feature-description">See your config as you build it</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">📥</div>
+                            <div class="feature-title">Easy Export</div>
+                            <div class="feature-description">One-click config export and copy</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-text">
+                    <h3>How to Use CONFIGEN</h3>
+                    
+                    <p>
+                        1. Browse components in the left panel<br>
+                        2. Drag components to the workspace<br>
+                        3. Customize settings as needed<br>
+                        4. Preview your config in real-time<br>
+                        5. Export and use in CS2<br>
+                        6. Enjoy your optimized gameplay!
+                    </p>
+                    
+                    <h3>About Globaly Genius</h3>
+                    
+                    <p>
+                        CONFIGEN is created by Globaly Genius, dedicated to building powerful, user-friendly tools
+                        for gamers. Our mission is to make advanced gaming customization accessible to everyone.
+                    </p>
+                    
+                    <p>
+                        CONFIGEN is completely free to use and will always remain that way. We believe in supporting
+                        the gaming community with quality tools.
+                    </p>
+
+                    <h3>Steam Configuration Guide</h3>
+                    <p>
+                        For official Steam configuration documentation and guides, visit:
+                        <a href="https://help.steampowered.com" target="_blank" style="color: var(--secondary);">Steam Support</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span>🎮</span>
+                    <span>CONFIGEN</span>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="#builder" class="footer-link" data-tab="builder">Builder</a>
+                    <a href="#templates" class="footer-link" data-tab="templates">Templates</a>
+                    <a href="#guides" class="footer-link" data-tab="guides">Guides</a>
+                    <a href="#about" class="footer-link" data-tab="about">About</a>
+                </div>
+                
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="GitHub">
+                        <span>🐙</span>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Twitter">
+                        <span>🐦</span>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Discord">
+                        <span>🎮</span>
+                    </a>
+                </div>
+                
+                <p class="copyright">
+                    © 2025 CONFIGEN — CS2 Config Builder by Globaly Genius<br>
+                    Made with ❤️ and 🎮 for the CS2 community<br>
+                    <a href="https://help.steampowered.com" target="_blank" style="color: var(--secondary);">Steam Configuration Guide</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Config Builder State
+        const configState = {
+            components: [
+                {
+                    id: 1,
+                    name: "Basic Bind",
+                    description: "Bind a key to a single command",
+                    icon: "⌨️",
+                    type: "bind",
+                    template: 'bind "{key}" "{command}"',
+                    fields: [
+                        { 
+                            name: "key", 
+                            label: "Key", 
+                            type: "select", 
+                            options: [
+                                "mouse1", "mouse2", "mouse3", "mouse4", "mouse5",
+                                "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+                                "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
+                                "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
+                                "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9", "f10", "f11", "f12",
+                                "space", "tab", "enter", "shift", "ctrl", "alt", "capslock",
+                                "uparrow", "downarrow", "leftarrow", "rightarrow",
+                                "comma", "period", "slash", "semicolon", "quote", "bracketleft", "bracketright", "backslash"
+                            ]
+                        },
+                        { 
+                            name: "command", 
+                            label: "Command", 
+                            type: "select", 
+                            options: [
+                                "+jump", "-jump", "+duck", "-duck", "+forward", "-forward", "+back", "-back",
+                                "+moveleft", "-moveleft", "+moveright", "-moveright", "+attack", "-attack",
+                                "+attack2", "-attack2", "+reload", "-reload", "+use", "-use", "+speed", "-speed",
+                                "use weapon_knife", "use weapon_usp_silencer", "use weapon_glock", "use weapon_elite",
+                                "use weapon_p250", "use weapon_tec9", "use weapon_cz75a", "use weapon_deagle", "use weapon_revolver",
+                                "use weapon_fiveseven", "use weapon_nova", "use weapon_xm1014", "use weapon_mag7", "use weapon_sawedoff",
+                                "use weapon_m249", "use weapon_negev", "use weapon_mac10", "use weapon_mp9", "use weapon_mp7",
+                                "use weapon_ump45", "use weapon_p90", "use weapon_bizon", "use weapon_galilar", "use weapon_famas",
+                                "use weapon_ak47", "use weapon_m4a1", "use weapon_m4a1_silencer", "use weapon_ssg08", "use weapon_sg556",
+                                "use weapon_aug", "use weapon_awp", "use weapon_g3sg1", "use weapon_scar20",
+                                "use weapon_hegrenade", "use weapon_flashbang", "use weapon_smokegrenade", "use weapon_molotov", "use weapon_incgrenade", "use weapon_decoy",
+                                "buy ak47", "buy m4a1", "buy m4a1_silencer", "buy awp", "buy ssg08", "buy sg556", "buy aug",
+                                "buy galilar", "buy famas", "buy p90", "buy ump45", "buy mp9", "buy mac10", "buy mp7", "buy bizon",
+                                "buy nova", "buy xm1014", "buy mag7", "buy sawedoff", "buy m249", "buy negev",
+                                "buy deagle", "buy revolver", "buy p250", "buy tec9", "buy fn57", "buy elite", "buy cz75a",
+                                "buy vest", "buy vesthelm", "buy defuser", "buy taser",
+                                "buy hegrenade", "buy flashbang", "buy smokegrenade", "buy molotov", "buy incgrenade", "buy decoy",
+                                "noclip", "god", "bot_kick", "bot_add ct", "bot_add t", "bot_stop", "bot_place",
+                                "mp_roundtime 60", "mp_roundtime_defuse 60", "mp_freezetime 0", "mp_buytime 9999",
+                                "sv_cheats 1", "sv_infinite_ammo 1", "ammo_grenade_limit_total 5", "sv_grenade_trajectory 1",
+                                "cl_showpos 1", "cl_showfps 1", "net_graph 1", "voice_enable 0", "snd_menumusic_volume 0",
+                                "say Hello!", "say_team Rush B!", "radio1", "radio2", "radio3", "voicerecord",
+                                "toggleconsole", "hideconsole", "showconsole", "clear", "exit", "quit", "disconnect",
+                                "retry", "reconnect", "exec config.cfg", "host_writeconfig", "echo Config Loaded!"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "Buy Bind",
+                    description: "Quick buy weapons and equipment",
+                    icon: "🛒",
+                    type: "bind",
+                    template: 'bind "{key}" "buy {weapons}"',
+                    fields: [
+                        { 
+                            name: "key", 
+                            label: "Key", 
+                            type: "select", 
+                            options: [
+                                "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8",
+                                "mouse4", "mouse5", "b", "v", "n", "m"
+                            ]
+                        },
+                        { 
+                            name: "weapons", 
+                            label: "Weapons", 
+                            type: "select", 
+                            options: [
+                                "ak47; m4a1_silencer",
+                                "awp",
+                                "deagle; vesthelm",
+                                "vesthelm; defuser",
+                                "hegrenade; flashbang; smokegrenade; molotov",
+                                "ak47; vesthelm; defuser; hegrenade; flashbang; smokegrenade",
+                                "m4a1_silencer; vesthelm; defuser; hegrenade; flashbang; smokegrenade",
+                                "awp; deagle; vesthelm; defuser"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: "Jump Throw",
+                    description: "Perfect jump throw bind for grenades",
+                    icon: "💣",
+                    type: "alias",
+                    template: 'alias "+jumpthrow" "+jump;-attack"\nalias "-jumpthrow" "-jump"\nbind "{key}" "+jumpthrow"',
+                    fields: [
+                        { 
+                            name: "key", 
+                            label: "Key", 
+                            type: "select", 
+                            options: [
+                                "v", "t", "mouse4", "mouse5", "f", "g", "c", "x"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 4,
+                    name: "Alias",
+                    description: "Create a custom command alias",
+                    icon: "🔤",
+                    type: "alias",
+                    template: 'alias "{aliasName}" "{commands}"',
+                    fields: [
+                        { name: "aliasName", label: "Alias Name", type: "text", placeholder: "e.g. quickflash" },
+                        { 
+                            name: "commands", 
+                            label: "Commands", 
+                            type: "select", 
+                            options: [
+                                "use weapon_flashbang; -attack",
+                                "use weapon_smokegrenade; -attack",
+                                "use weapon_hegrenade; -attack",
+                                "use weapon_molotov; -attack",
+                                "say_team Flashing!; use weapon_flashbang",
+                                "say_team Smoking!; use weapon_smokegrenade",
+                                "cl_righthand 0; echo Left hand",
+                                "cl_righthand 1; echo Right hand",
+                                "volume 0.1; echo Volume Low",
+                                "volume 0.5; echo Volume Medium",
+                                "volume 1.0; echo Volume High"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 5,
+                    name: "Toggle Alias",
+                    description: "Toggle between two states with a key",
+                    icon: "🔁",
+                    type: "alias",
+                    template: 'alias "{toggleName}" "{alias1}"\nalias "{alias1}" "{command1}; alias {toggleName} {alias2}"\nalias "{alias2}" "{command2}; alias {toggleName} {alias1}"\nbind "{key}" "{toggleName}"',
+                    fields: [
+                        { name: "toggleName", label: "Toggle Name", type: "text", placeholder: "e.g. crosshairToggle" },
+                        { name: "alias1", label: "First Alias", type: "text", placeholder: "e.g. crosshairSmall" },
+                        { name: "alias2", label: "Second Alias", type: "text", placeholder: "e.g. crosshairLarge" },
+                        { 
+                            name: "command1", 
+                            label: "First Command", 
+                            type: "select", 
+                            options: [
+                                "cl_crosshairsize 2",
+                                "cl_crosshairdot 0",
+                                "cl_crosshairgap -3",
+                                "volume 0.1",
+                                "sensitivity 1.0",
+                                "cl_righthand 0",
+                                "r_cleardecals"
+                            ]
+                        },
+                        { 
+                            name: "command2", 
+                            label: "Second Command", 
+                            type: "select", 
+                            options: [
+                                "cl_crosshairsize 5",
+                                "cl_crosshairdot 1",
+                                "cl_crosshairgap -1",
+                                "volume 0.5",
+                                "sensitivity 2.0",
+                                "cl_righthand 1",
+                                "r_cleardecals"
+                            ]
+                        },
+                        { 
+                            name: "key", 
+                            label: "Key", 
+                            type: "select", 
+                            options: [
+                                "k", "l", "mouse4", "mouse5", "f", "g"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 6,
+                    name: "Practice Config",
+                    description: "Useful commands for practice sessions",
+                    icon: "🎯",
+                    type: "bind",
+                    template: '// Practice Config\nbind "n" "noclip"\nbind "m" "god"\nbind "," "bot_kick"\nbind "." "bot_add ct"\nbind "/" "bot_add t"\nbind "[" "mp_roundtime 60"\nbind "]" "mp_roundtime_defuse 60"',
+                    fields: []
+                },
+                {
+                    id: 7,
+                    name: "Crosshair Config",
+                    description: "Customize your crosshair settings",
+                    icon: "🎯",
+                    type: "config",
+                    template: '// Crosshair Configuration\ncl_crosshair_drawoutline "0"\ncl_crosshair_dynamic_maxdist_splitratio "0.35"\ncl_crosshair_dynamic_splitalpha_innermod "1"\ncl_crosshair_dynamic_splitalpha_outermod "0.5"\ncl_crosshair_dynamic_splitdist "7"\ncl_crosshair_outlinethickness "1"\ncl_crosshair_sniper_width "1"\ncl_crosshair_t "0"\ncl_crosshairalpha "255"\ncl_crosshaircolor "5"\ncl_crosshaircolor_b "255"\ncl_crosshaircolor_g "255"\ncl_crosshaircolor_r "255"\ncl_crosshairdot "0"\ncl_crosshairgap "-3"\ncl_crosshairsize "2"\ncl_crosshairstyle "4"\ncl_crosshairthickness "0.5"\ncl_crosshairusealpha "1"',
+                    fields: []
+                },
+                {
+                    id: 8,
+                    name: "Viewmodel Config",
+                    description: "Adjust weapon viewmodel position",
+                    icon: "🔫",
+                    type: "config",
+                    template: '// Viewmodel Configuration\nviewmodel_fov "68"\nviewmodel_offset_x "2.5"\nviewmodel_offset_y "0"\nviewmodel_offset_z "-1.5"\nviewmodel_presetpos "0"\ncl_viewmodel_shift_left_amt "0.5"\ncl_viewmodel_shift_right_amt "0.25"\ncl_bob_lower_amt "5"\ncl_bobamt_lat "0.1"\ncl_bobamt_vert "0.1"\ncl_bobcycle "0.98"',
+                    fields: []
+                },
+                {
+                    id: 9,
+                    name: "Network Optimization",
+                    description: "Optimize network settings for better performance",
+                    icon: "📡",
+                    type: "config",
+                    template: '// Network Optimization\ncl_cmdrate "128"\ncl_updaterate "128"\nrate "786432"\ncl_interp "0"\ncl_interp_ratio "1"\ncl_lagcompensation "1"\ncl_predict "1"\ncl_predictweapons "1"',
+                    fields: []
+                },
+                {
+                    id: 10,
+                    name: "Sound Optimization",
+                    description: "Optimize sound settings for better awareness",
+                    icon: "🔊",
+                    type: "config",
+                    template: '// Sound Optimization\nsnd_mixahead "0.05"\nsnd_headphone_pan_exponent "2"\nsnd_headphone_pan_radial_weight "0.5"\nsnd_front_headphone_position "45.0"\nsnd_rear_headphone_position "135.0"\nsnd_legacy_surround "0"\nsnd_pitchquality "1"\nsnd_musicvolume "0"',
+                    fields: []
+                }
+            ],
+            workspaceItems: [],
+            templates: {
+                awp: [
+                    {
+                        id: 1001,
+                        name: "AWP Quick Switch",
+                        description: "Quick switch after shooting for faster rescope",
+                        icon: "🎯",
+                        type: "bind",
+                        template: 'bind "q" "lastinv"',
+                        fields: []
+                    },
+                    {
+                        id: 1002,
+                        name: "Jump Throw for Smokes",
+                        description: "Perfect smoke lineups every time",
+                        icon: "💣",
+                        type: "alias",
+                        template: 'alias "+jumpthrow" "+jump;-attack"\nalias "-jumpthrow" "-jump"\nbind "v" "+jumpthrow"',
+                        fields: []
+                    },
+                    {
+                        id: 1003,
+                        name: "AWP Zoom Toggle",
+                        description: "Toggle between zoom levels",
+                        icon: "🔍",
+                        type: "alias",
+                        template: 'alias "zoomToggle" "zoom1"\nalias "zoom1" "zoom_sensitivity_ratio_mouse 1; alias zoomToggle zoom2"\nalias "zoom2" "zoom_sensitivity_ratio_mouse 0.9; alias zoomToggle zoom1"\nbind "mouse3" "zoomToggle"',
+                        fields: []
+                    }
+                ],
+                rifle: [
+                    {
+                        id: 2001,
+                        name: "Spray Control Helper",
+                        description: "Toggle crosshair for spray control practice",
+                        icon: "🎯",
+                        type: "alias",
+                        template: 'alias "sprayToggle" "sprayOn"\nalias "sprayOn" "cl_crosshairdot 1; cl_crosshairgap -5; alias sprayToggle sprayOff"\nalias "sprayOff" "cl_crosshairdot 0; cl_crosshairgap -3; alias sprayToggle sprayOn"\nbind "capslock" "sprayToggle"',
+                        fields: []
+                    },
+                    {
+                        id: 2002,
+                        name: "Quick Utility Binds",
+                        description: "Fast access to all grenades",
+                        icon: "💣",
+                        type: "bind",
+                        template: 'bind "4" "use weapon_hegrenade"\nbind "5" "use weapon_flashbang"\nbind "6" "use weapon_smokegrenade"\nbind "7" "use weapon_molotov; use weapon_incgrenade"',
+                        fields: []
+                    },
+                    {
+                        id: 2003,
+                        name: "Recoil Crosshair",
+                        description: "Dynamic crosshair for recoil control",
+                        icon: "🎯",
+                        type: "config",
+                        template: 'cl_crosshairstyle "4"\ncl_crosshair_dynamic_splitdist "7"\ncl_crosshair_dynamic_splitalpha_innermod "1"\ncl_crosshair_dynamic_splitalpha_outermod "0.5"',
+                        fields: []
+                    }
+                ],
+                entry: [
+                    {
+                        id: 3001,
+                        name: "Quick Peek Bind",
+                        description: "Fast peeking technique for entry fragging",
+                        icon: "🏃",
+                        type: "alias",
+                        template: 'alias "+quickpeek" "+forward;+jump;+duck"\nalias "-quickpeek" "-forward;-jump;-duck"\nbind "shift" "+quickpeek"',
+                        fields: []
+                    },
+                    {
+                        id: 3002,
+                        name: "Flashbang Peek",
+                        description: "Throw flash and immediately peek",
+                        icon: "💥",
+                        type: "alias",
+                        template: 'alias "+flashpeek" "use weapon_flashbang; +attack"\nalias "-flashpeek" "-attack; +forward"\nbind "f" "+flashpeek"',
+                        fields: []
+                    },
+                    {
+                        id: 3003,
+                        name: "Movement Optimizations",
+                        description: "Settings for better movement",
+                        icon: "🏃",
+                        type: "config",
+                        template: 'cl_showpos "1"\ncl_autowepswitch "0"\nsv_cheats "1"\nsv_gravity "800"\nsv_maxvelocity "3500"',
+                        fields: []
+                    }
+                ],
+                support: [
+                    {
+                        id: 4001,
+                        name: "Smoke Lineup Helper",
+                        description: "Crosshair for smoke lineups",
+                        icon: "💨",
+                        type: "alias",
+                        template: 'alias "smokeCrosshair" "crosshairSmoke"\nalias "crosshairSmoke" "cl_crosshairgap -10; cl_crosshairsize 100; alias smokeCrosshair crosshairNormal"\nalias "crosshairNormal" "cl_crosshairgap -3; cl_crosshairsize 2; alias smokeCrosshair crosshairSmoke"\nbind "c" "smokeCrosshair"',
+                        fields: []
+                    },
+                    {
+                        id: 4002,
+                        name: "Team Communication",
+                        description: "Quick radio commands",
+                        icon: "📢",
+                        type: "bind",
+                        template: 'bind "z" "radio1"\nbind "x" "radio2"\nbind "c" "radio3"\nbind "v" "voicerecord"',
+                        fields: []
+                    },
+                    {
+                        id: 4003,
+                        name: "Utility Quick Switch",
+                        description: "Cycle through utility quickly",
+                        icon: "💣",
+                        type: "bind",
+                        template: 'bind "mouse4" "invprevnogrenade"\nbind "mouse5" "invnextnogrenade"',
+                        fields: []
+                    }
+                ]
+            }
+        };
+
+        // DOM Elements
+        const componentsListElement = document.getElementById('componentsList');
+        const workspaceContentElement = document.getElementById('workspaceContent');
+        const previewContentElement = document.getElementById('previewContent');
+        const bindCountElement = document.getElementById('bindCount');
+        const aliasCountElement = document.getElementById('aliasCount');
+        const exportConfigButton = document.getElementById('exportConfig');
+        const clearWorkspaceButton = document.getElementById('clearWorkspace');
+        const copyConfigButton = document.getElementById('copyConfig');
+        const templateButtons = document.querySelectorAll('[data-template]');
+
+        // Utility Functions
+        function formatConfigText(configItems) {
+            let configText = "// CONFIGEN Generated CS2 Config\n";
+            configText += "// Created with CONFIGEN by Globaly Genius\n";
+            configText += "// " + new Date().toLocaleDateString() + "\n\n";
+            
+            // Group items by type
+            const aliases = configItems.filter(item => item.type === 'alias');
+            const binds = configItems.filter(item => item.type === 'bind');
+            const configs = configItems.filter(item => item.type === 'config');
+            
+            // Add aliases first
+            if (aliases.length > 0) {
+                configText += "// ALIASES\n";
+                aliases.forEach(item => {
+                    configText += item.configText + "\n\n";
+                });
+            }
+            
+            // Then binds
+            if (binds.length > 0) {
+                configText += "// BINDS\n";
+                binds.forEach(item => {
+                    configText += item.configText + "\n";
+                });
+                configText += "\n";
+            }
+            
+            // Then config settings
+            if (configs.length > 0) {
+                configText += "// CONFIGURATION SETTINGS\n";
+                configs.forEach(item => {
+                    configText += item.configText + "\n\n";
+                });
+            }
+            
+            return configText;
+        }
+
+        function updateStats() {
+            const bindCount = configState.workspaceItems.filter(item => item.type === 'bind').length;
+            const aliasCount = configState.workspaceItems.filter(item => item.type === 'alias').length;
+            
+            bindCountElement.textContent = bindCount;
+            aliasCountElement.textContent = aliasCount;
+        }
+
+        function updatePreview() {
+            if (configState.workspaceItems.length === 0) {
+                previewContentElement.textContent = "// Your config will appear here";
+                return;
+            }
+            
+            const configText = formatConfigText(configState.workspaceItems);
+            previewContentElement.textContent = configText;
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.5s ease-in forwards';
+                setTimeout(() => {
+                    notification.remove();
+                }, 500);
+            }, 3000);
+        }
+
+        // Component Management
+        function createComponentElements() {
+            componentsListElement.innerHTML = '';
+            
+            configState.components.forEach(component => {
+                const componentElement = document.createElement('div');
+                componentElement.className = 'component-item';
+                componentElement.draggable = true;
+                componentElement.setAttribute('data-id', component.id);
+                
+                componentElement.innerHTML = `
+                    <div class="component-name">
+                        <span>${component.icon}</span>
+                        <span>${component.name}</span>
+                    </div>
+                    <div class="component-description">${component.description}</div>
+                `;
+                
+                componentElement.addEventListener('dragstart', handleDragStart);
+                
+                componentsListElement.appendChild(componentElement);
+            });
+        }
+
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.getAttribute('data-id'));
+            e.dataTransfer.effectAllowed = 'copy';
+        }
+
+        function setupWorkspaceDropZone() {
+            workspaceContentElement.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('active-drop');
+            });
+            
+            workspaceContentElement.addEventListener('dragleave', function() {
+                this.classList.remove('active-drop');
+            });
+            
+            workspaceContentElement.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('active-drop');
+                
+                const componentId = e.dataTransfer.getData('text/plain');
+                const component = configState.components.find(c => c.id == componentId);
+                
+                if (component) {
+                    addComponentToWorkspace(component);
+                }
+            });
+        }
+
+        function addComponentToWorkspace(component) {
+            // Create a copy of the component with a unique ID
+            const workspaceItem = {
+                ...component,
+                workspaceId: Date.now() + Math.random(),
+                configText: component.template,
+                values: {}
+            };
+            
+            // Initialize default values for fields
+            component.fields.forEach(field => {
+                if (field.type === 'select' && field.options && field.options.length > 0) {
+                    workspaceItem.values[field.name] = field.options[0];
+                } else {
+                    workspaceItem.values[field.name] = field.placeholder || '';
+                }
+            });
+            
+            configState.workspaceItems.push(workspaceItem);
+            renderWorkspaceItems();
+            updatePreview();
+            updateStats();
+            saveConfig();
+            
+            showNotification(`Added ${component.name} to workspace`, 'success');
+        }
+
+        function renderWorkspaceItems() {
+            if (configState.workspaceItems.length === 0) {
+                workspaceContentElement.innerHTML = `
+                    <div class="empty-workspace">
+                        <div class="empty-workspace-icon">⬇️</div>
+                        <h3>Drag components here</h3>
+                        <p>Start building your CS2 config by dragging components from the left panel</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            workspaceContentElement.innerHTML = '';
+            
+            configState.workspaceItems.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'config-item';
+                itemElement.setAttribute('data-id', item.workspaceId);
+                itemElement.draggable = true;
+                
+                let configForm = '';
+                if (item.fields && item.fields.length > 0) {
+                    configForm = '<div class="config-form">';
+                    item.fields.forEach(field => {
+                        if (field.type === 'select') {
+                            configForm += `
+                                <div class="form-group">
+                                    <label class="form-label">${field.label}</label>
+                                    <select class="form-select" data-field="${field.name}" data-item="${item.workspaceId}">
+                                        ${field.options.map(opt => 
+                                            `<option value="${opt}" ${item.values[field.name] === opt ? 'selected' : ''}>${opt}</option>`
+                                        ).join('')}
+                                    </select>
+                                </div>
+                            `;
+                        } else {
+                            configForm += `
+                                <div class="form-group">
+                                    <label class="form-label">${field.label}</label>
+                                    <input type="${field.type}" class="form-input" data-field="${field.name}" data-item="${item.workspaceId}" 
+                                           value="${item.values[field.name] || ''}" placeholder="${field.placeholder || ''}">
+                                </div>
+                            `;
+                        }
+                    });
+                    
+                    // Add form row for multiple fields
+                    if (item.fields.length > 1) {
+                        configForm = configForm.replace(/<div class="form-group">/g, '<div class="form-row"><div class="form-group">');
+                        configForm = configForm.replace(/<\/div>\s*<div class="form-group">/g, '</div></div><div class="form-row"><div class="form-group">');
+                        configForm += '</div>';
+                    }
+                    
+                    configForm += '</div>';
+                }
+                
+                itemElement.innerHTML = `
+                    <div class="config-item-header">
+                        <div class="config-item-name">
+                            <span>${item.icon}</span>
+                            <span>${item.name}</span>
+                        </div>
+                        <div class="config-item-actions">
+                            <button class="btn btn-danger btn-sm delete-item" data-id="${item.workspaceId}">
+                                <span>🗑️</span>
+                            </button>
+                        </div>
+                    </div>
+                    ${configForm}
+                    <div class="config-item-code">${generateConfigText(item)}</div>
+                `;
+                
+                workspaceContentElement.appendChild(itemElement);
+            });
+            
+            // Add event listeners for form elements
+            document.querySelectorAll('.form-select, .form-input').forEach(element => {
+                element.addEventListener('change', handleFormChange);
+                element.addEventListener('input', handleFormChange);
+            });
+            
+            // Add event listeners for delete buttons
+            document.querySelectorAll('.delete-item').forEach(button => {
+                button.addEventListener('click', function() {
+                    const itemId = this.getAttribute('data-id');
+                    removeItemFromWorkspace(itemId);
+                });
+            });
+            
+            // Setup drag and drop for reordering
+            setupWorkspaceDragAndDrop();
+        }
+
+        function handleFormChange(e) {
+            const fieldName = e.target.getAttribute('data-field');
+            const itemId = e.target.getAttribute('data-item');
+            const value = e.target.value;
+            
+            const item = configState.workspaceItems.find(i => i.workspaceId == itemId);
+            if (item) {
+                item.values[fieldName] = value;
+                item.configText = generateConfigText(item);
+                
+                // Update the code display
+                const codeElement = e.target.closest('.config-item').querySelector('.config-item-code');
+                if (codeElement) {
+                    codeElement.textContent = item.configText;
+                }
+                
+                updatePreview();
+                saveConfig();
+            }
+        }
+
+        function generateConfigText(item) {
+            let configText = item.template;
+            
+            // Replace placeholders with actual values
+            Object.keys(item.values).forEach(key => {
+                const value = item.values[key];
+                configText = configText.replace(new RegExp(`{${key}}`, 'g'), value);
+            });
+            
+            return configText;
+        }
+
+        function setupWorkspaceDragAndDrop() {
+            const items = workspaceContentElement.querySelectorAll('.config-item');
+            
+            items.forEach(item => {
+                item.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('text/plain', this.getAttribute('data-id'));
+                    e.dataTransfer.effectAllowed = 'move';
+                    this.classList.add('dragging');
+                });
+                
+                item.addEventListener('dragend', function() {
+                    this.classList.remove('dragging');
+                });
+            });
+            
+            workspaceContentElement.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                const afterElement = getDragAfterElement(workspaceContentElement, e.clientY);
+                const draggable = document.querySelector('.dragging');
+                if (draggable) {
+                    if (afterElement == null) {
+                        this.appendChild(draggable);
+                    } else {
+                        this.insertBefore(draggable, afterElement);
+                    }
+                }
+            });
+            
+            workspaceContentElement.addEventListener('drop', function(e) {
+                e.preventDefault();
+                const itemId = e.dataTransfer.getData('text/plain');
+                const items = Array.from(this.querySelectorAll('.config-item'));
+                const newIndex = items.findIndex(item => item.getAttribute('data-id') === itemId);
+                
+                if (newIndex !== -1) {
+                    // Reorder the array
+                    const item = configState.workspaceItems.find(i => i.workspaceId == itemId);
+                    configState.workspaceItems = configState.workspaceItems.filter(i => i.workspaceId != itemId);
+                    configState.workspaceItems.splice(newIndex, 0, item);
+                    
+                    updatePreview();
+                    saveConfig();
+                }
+            });
+        }
+
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.config-item:not(.dragging)')];
+            
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        function removeItemFromWorkspace(itemId) {
+            configState.workspaceItems = configState.workspaceItems.filter(item => item.workspaceId != itemId);
+            renderWorkspaceItems();
+            updatePreview();
+            updateStats();
+            saveConfig();
+            
+            showNotification('Item removed from workspace', 'warning');
+        }
+
+        function clearWorkspace() {
+            if (configState.workspaceItems.length === 0) return;
+            
+            if (confirm('Are you sure you want to clear the workspace? This action cannot be undone.')) {
+                configState.workspaceItems = [];
+                renderWorkspaceItems();
+                updatePreview();
+                updateStats();
+                saveConfig();
+                
+                showNotification('Workspace cleared', 'warning');
+            }
+        }
+
+        function exportConfig() {
+            if (configState.workspaceItems.length === 0) {
+                showNotification('No config to export', 'warning');
+                return;
+            }
+            
+            const configText = formatConfigText(configState.workspaceItems);
+            const blob = new Blob([configText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'configen.cfg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('Config exported as configen.cfg', 'success');
+        }
+
+        function copyConfig() {
+            if (configState.workspaceItems.length === 0) {
+                showNotification('No config to copy', 'warning');
+                return;
+            }
+            
+            const configText = formatConfigText(configState.workspaceItems);
+            navigator.clipboard.writeText(configText).then(() => {
+                showNotification('Config copied to clipboard', 'success');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = configText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification('Config copied to clipboard', 'success');
+            });
+        }
+
+        function loadTemplate(templateName) {
+            if (!configState.templates[templateName]) {
+                showNotification('Template not found', 'error');
+                return;
+            }
+            
+            // Clear current workspace
+            configState.workspaceItems = [];
+            
+            // Add template items
+            configState.templates[templateName].forEach(item => {
+                const workspaceItem = {
+                    ...item,
+                    workspaceId: Date.now() + Math.random(),
+                    configText: item.template,
+                    values: {}
+                };
+                configState.workspaceItems.push(workspaceItem);
+            });
+            
+            renderWorkspaceItems();
+            updatePreview();
+            updateStats();
+            saveConfig();
+            
+            // Switch to builder tab
+            switchTab('builder');
+            
+            showNotification(`Loaded ${templateName} template`, 'success');
+        }
+
+        // Save/Load Config
+        function saveConfig() {
+            try {
+                localStorage.setItem('configenWorkspace', JSON.stringify(configState.workspaceItems));
+            } catch (error) {
+                console.error('Failed to save config:', error);
+            }
+        }
+
+        function loadConfig() {
+            try {
+                const saved = localStorage.getItem('configenWorkspace');
+                if (saved) {
+                    const savedItems = JSON.parse(saved);
+                    // Ensure all saved items have proper structure
+                    configState.workspaceItems = savedItems.map(item => ({
+                        ...item,
+                        values: item.values || {}
+                    }));
+                    renderWorkspaceItems();
+                    updatePreview();
+                    updateStats();
+                }
+            } catch (error) {
+                console.error('Failed to load config:', error);
+            }
+        }
+
+        // Tab Management
+        function switchTab(tabId) {
+            document.querySelectorAll('.tabs-container').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelectorAll('.mobile-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            document.querySelector(`.nav-link[data-tab="${tabId}"]`).classList.add('active');
+            document.querySelector(`.mobile-nav-item[data-tab="${tabId}"]`).classList.add('active');
+            
+            localStorage.setItem('activeTab', tabId);
+        }
+
+        // Language Management
+        const translations = {
+            en: {
+                builder: "Builder",
+                templates: "Templates",
+                guides: "Guides",
+                about: "About",
+                configComponents: "Config Components",
+                configWorkspace: "Config Workspace",
+                configPreview: "Config Preview",
+                export: "Export",
+                clear: "Clear",
+                copy: "Copy",
+                dragComponentsHere: "Drag components here",
+                startBuilding: "Start building your CS2 config by dragging components from the left panel",
+                configTemplates: "Config Templates",
+                startWithPrebuilt: "Start with pre-built config templates for different playstyles and preferences",
+                awpSpecialist: "AWP Specialist",
+                awpDescription: "Optimized for sniping with quick weapon switches and jump-throw binds",
+                rifleMaster: "Rifle Master",
+                rifleDescription: "Perfect for riflers with spray control helpers and utility binds",
+                entryFragger: "Entry Fragger",
+                entryDescription: "Aggressive setup with quick peeking and movement optimization",
+                supportPlayer: "Support Player",
+                supportDescription: "Utility-focused with smoke lineups and team communication binds",
+                loadTemplate: "Load Template",
+                cs2ConfigGuides: "CS2 Config Guides",
+                learnHowToCreate: "Learn how to create effective configs and optimize your CS2 experience",
+                understandingBinds: "Understanding CS2 Binds and Aliases",
+                bindsDescription1: "Binds and aliases are powerful tools in CS2 that allow you to customize your gameplay experience. With CONFIGEN, you can easily create complex configurations without needing to remember syntax.",
+                bindsDescription2: "Binds assign actions to specific keys. For example, you can bind a key to buy weapons, throw grenades in specific ways, or execute complex movement sequences.",
+                bindsDescription3: "Aliases are custom commands that can execute multiple actions with a single keypress. They're perfect for creating sophisticated utility sequences or movement tricks.",
+                keyBinding: "Key Binding",
+                keyBindingDesc: "Assign actions to any key on your keyboard",
+                aliasChains: "Alias Chains",
+                aliasChainsDesc: "Create sequences of commands that execute in order",
+                bestPractices: "Best Practices",
+                bestPracticesList: "• Use clear, descriptive names for your aliases<br>• Test your config in a private server before using in competitive<br>• Keep a backup of your previous config<br>• Use comments in your config to remember what each bind does<br>• Optimize for your specific playstyle and preferences",
+                commonExamples: "Common Config Examples",
+                jumpThrowExample: "Jump Throw Bind:",
+                buyBindsExample: "Buy Binds:",
+                practiceConfigExample: "Practice Config:",
+                aboutConfigen: "About CONFIGEN",
+                mostPowerfulBuilder: "The most powerful drag and drop config builder for CS2",
+                whatIsConfigen: "What is CONFIGEN?",
+                configenDescription1: "CONFIGEN is an intuitive drag and drop config builder for Counter-Strike 2 that makes creating complex binds and aliases accessible to everyone. No more memorizing syntax or debugging config files manually.",
+                configenDescription2: "Whether you're a casual player looking to optimize your controls or a competitive player seeking every advantage, CONFIGEN provides the tools you need to create the perfect config.",
+                dragDrop: "Drag & Drop",
+                dragDropDesc: "Intuitive visual config building",
+                templatesDesc: "Pre-built configs for different playstyles",
+                livePreview: "Live Preview",
+                livePreviewDesc: "See your config as you build it",
+                easyExport: "Easy Export",
+                easyExportDesc: "One-click config export and copy",
+                howToUse: "How to Use CONFIGEN",
+                howToUseSteps: "1. Browse components in the left panel<br>2. Drag components to the workspace<br>3. Customize settings as needed<br>4. Preview your config in real-time<br>5. Export and use in CS2<br>6. Enjoy your optimized gameplay!",
+                aboutGlobalyGenius: "About Globaly Genius",
+                aboutGG1: "CONFIGEN is created by Globaly Genius, dedicated to building powerful, user-friendly tools for gamers. Our mission is to make advanced gaming customization accessible to everyone.",
+                aboutGG2: "CONFIGEN is completely free to use and will always remain that way. We believe in supporting the gaming community with quality tools.",
+                madeWithLove: "Made with ❤️ and 🎮 for the CS2 community"
+            },
+            ru: {
+                builder: "Конструктор",
+                templates: "Шаблоны",
+                guides: "Руководства",
+                about: "О программе",
+                configComponents: "Компоненты конфига",
+                configWorkspace: "Рабочая область",
+                configPreview: "Предпросмотр конфига",
+                export: "Экспорт",
+                clear: "Очистить",
+                copy: "Копировать",
+                dragComponentsHere: "Перетащите компоненты сюда",
+                startBuilding: "Начните создавать свой CS2 конфиг, перетаскивая компоненты из левой панели",
+                configTemplates: "Шаблоны конфигов",
+                startWithPrebuilt: "Начните с готовых шаблонов конфигов для разных стилей игры и предпочтений",
+                awpSpecialist: "Снайпер",
+                awpDescription: "Оптимизирован для снайпинга с быстрым переключением оружия и байндами для прыжковых бросков",
+                rifleMaster: "Стрелковое оружие",
+                rifleDescription: "Идеально для стрелков с помощниками контроля отдачи и байндами утилит",
+                entryFragger: "Энтри фраггер",
+                entryDescription: "Агрессивная настройка с быстрыми пиками и оптимизацией движения",
+                supportPlayer: "Поддержка",
+                supportDescription: "Сфокусирован на утилитах с линиями для смоков и байндами командной связи",
+                loadTemplate: "Загрузить шаблон",
+                cs2ConfigGuides: "Руководства по конфигам CS2",
+                learnHowToCreate: "Узнайте, как создавать эффективные конфиги и оптимизировать свой опыт в CS2",
+                understandingBinds: "Понимание байндов и алиасов в CS2",
+                bindsDescription1: "Байнды и алиасы - это мощные инструменты в CS2, которые позволяют настраивать ваш игровой опыт. С CONFIGEN вы можете легко создавать сложные конфигурации без необходимости запоминать синтаксис.",
+                bindsDescription2: "Байнды назначают действия на определенные клавиши. Например, вы можете назначить клавишу для покупки оружия, броска гранат определенным способом или выполнения сложных последовательностей движения.",
+                bindsDescription3: "Алиасы - это пользовательские команды, которые могут выполнять несколько действий одним нажатием клавиши. Они идеально подходят для создания сложных последовательностей утилит или трюков движения.",
+                keyBinding: "Назначение клавиш",
+                keyBindingDesc: "Назначайте действия на любые клавиши вашей клавиатуры",
+                aliasChains: "Цепочки алиасов",
+                aliasChainsDesc: "Создавайте последовательности команд, которые выполняются по порядку",
+                bestPractices: "Лучшие практики",
+                bestPracticesList: "• Используйте понятные, описательные имена для ваших алиасов<br>• Тестируйте конфиг на приватном сервере перед использованием в соревновательной игре<br>• Сохраняйте резервную копию предыдущего конфига<br>• Используйте комментарии в конфиге, чтобы помнить, что делает каждый байнд<br>• Оптимизируйте под ваш конкретный стиль игры и предпочтения",
+                commonExamples: "Распространенные примеры конфигов",
+                jumpThrowExample: "Байнд для прыжкового броска:",
+                buyBindsExample: "Байнды покупки:",
+                practiceConfigExample: "Конфиг для практики:",
+                aboutConfigen: "О CONFIGEN",
+                mostPowerfulBuilder: "Самый мощный конструктор конфигов с drag and drop для CS2",
+                whatIsConfigen: "Что такое CONFIGEN?",
+                configenDescription1: "CONFIGEN - это интуитивно понятный конструктор конфигов для Counter-Strike 2 с drag and drop интерфейсом, который делает создание сложных байндов и алиасов доступным для всех. Больше не нужно запоминать синтаксис или отлаживать конфиги вручную.",
+                configenDescription2: "Независимо от того, являетесь ли вы казуальным игроком, желающим оптимизировать управление, или соревновательным игроком, ищущим каждое преимущество, CONFIGEN предоставляет инструменты, необходимые для создания идеального конфига.",
+                dragDrop: "Drag & Drop",
+                dragDropDesc: "Интуитивное визуальное создание конфигов",
+                templatesDesc: "Готовые конфиги для разных стилей игры",
+                livePreview: "Прямой предпросмотр",
+                livePreviewDesc: "Смотрите свой конфиг по мере его создания",
+                easyExport: "Простой экспорт",
+                easyExportDesc: "Экспорт и копирование конфига в один клик",
+                howToUse: "Как использовать CONFIGEN",
+                howToUseSteps: "1. Просмотрите компоненты в левой панели<br>2. Перетащите компоненты в рабочую область<br>3. Настройте параметры по необходимости<br>4. Просматривайте конфиг в реальном времени<br>5. Экспортируйте и используйте в CS2<br>6. Наслаждайтесь оптимизированным геймплеем!",
+                aboutGlobalyGenius: "О Globaly Genius",
+                aboutGG1: "CONFIGEN создан Globaly Genius, который занимается созданием мощных, удобных инструментов для геймеров. Наша миссия - сделать продвинутую игровую настройку доступной для всех.",
+                aboutGG2: "CONFIGEN полностью бесплатен и всегда будет оставаться таким. Мы верим в поддержку игрового сообщества качественными инструментами.",
+                madeWithLove: "Сделано с ❤️ и 🎮 для сообщества CS2"
+            },
+            be: {
+                builder: "Канструктар",
+                templates: "Шаблоны",
+                guides: "Даведнікі",
+                about: "Аб праграме",
+                configComponents: "Кампаненты канфіга",
+                configWorkspace: "Працоўная вобласць",
+                configPreview: "Прадпрагляд канфіга",
+                export: "Экспарт",
+                clear: "Ачысціць",
+                copy: "Капіяваць",
+                dragComponentsHere: "Перацягніце кампаненты сюды",
+                startBuilding: "Пачніце ствараць свой CS2 канфіг, перацягваючы кампаненты з левай панэлі",
+                configTemplates: "Шаблоны канфігаў",
+                startWithPrebuilt: "Пачніце з гатовых шаблонаў канфігаў для розных стыляў гульні і пераваг",
+                awpSpecialist: "Снайпер",
+                awpDescription: "Аптымізаваны для снайпінгу з хуткім пераключэннем зброі і байндамі для скачковых кідкаў",
+                rifleMaster: "Стралковая зброя",
+                rifleDescription: "Ідэальна для стралкоў з дапаможнікамі кантролю аддачы і байндамі ўтыліт",
+                entryFragger: "Энтры фраггер",
+                entryDescription: "Агрэсіўная наладка з хуткімі пікамі і аптымізацыяй руху",
+                supportPlayer: "Падтрымка",
+                supportDescription: "Сфакусаваны на ўтылітах з лініямі для дымавых гранат і байндамі каманднай сувязі",
+                loadTemplate: "Загрузіць шаблон",
+                cs2ConfigGuides: "Даведнікі па канфігах CS2",
+                learnHowToCreate: "Даведайцеся, як ствараць эфектыўныя канфігі і аптымізаваць свой вопыт у CS2",
+                understandingBinds: "Разуменне байндаў і аліасаў у CS2",
+                bindsDescription1: "Байнды і аліасы - гэта магутныя інструменты ў CS2, якія дазваляюць наладжваць ваш гульнявы вопыт. З CONFIGEN вы можаце лёгка ствараць складаныя канфігурацыі без неабходнасці запамінаць сінтаксіс.",
+                bindsDescription2: "Байнды прызначаюць дзеянні на пэўныя клавішы. Напрыклад, вы можаце прызначыць клавішу для пакупкі зброі, кідку гранат пэўным спосабам або выканання складаных паслядоўнасцей руху.",
+                bindsDescription3: "Аліасы - гэта карыстальніцкія каманды, якія могуць выконваць некалькі дзеянняў адным націскам клавішы. Яны ідэальна падыходзяць для стварэння складаных паслядоўнасцей утыліт або трыкоў руху.",
+                keyBinding: "Прызначэнне клавіш",
+                keyBindingDesc: "Прызначайце дзеянні на любыя клавішы вашай клавіятуры",
+                aliasChains: "Ланцужкі аліасаў",
+                aliasChainsDesc: "Стварайце паслядоўнасці каманд, якія выконваюцца па парадку",
+                bestPractices: "Лепшыя практыкі",
+                bestPracticesList: "• Выкарыстоўвайце зразумелыя, апісальныя імёны для вашых аліасаў<br>• Тэсціруйце канфіг на прыватным серверы перад выкарыстаннем у спаборніцкай гульні<br>• Захоўвайце рэзервовую копію папярэдняга канфіга<br>• Выкарыстоўвайце каментары ў канфігу, каб памятаць, што робіць кожны байнд<br>• Аптымізуйце пад ваш канкрэтны стыль гульні і перавагі",
+                commonExamples: "Распаўсюджаныя прыклады канфігаў",
+                jumpThrowExample: "Байнд для скачковага кідку:",
+                buyBindsExample: "Байнды пакупкі:",
+                practiceConfigExample: "Канфіг для практыкі:",
+                aboutConfigen: "Аб CONFIGEN",
+                mostPowerfulBuilder: "Самы магутны канструктар канфігаў з drag and drop для CS2",
+                whatIsConfigen: "Што такое CONFIGEN?",
+                configenDescription1: "CONFIGEN - гэта інтуітыўна зразумелы канструктар канфігаў для Counter-Strike 2 з drag and drop інтэрфейсам, які робіць стварэнне складаных байндаў і аліасаў даступным для ўсіх. Больш не трэба запамінаць сінтаксіс або адладжваць канфігі ўручную.",
+                configenDescription2: "Незалежна ад таго, ці з'яўляецеся вы казуальным гульцом, які жадае аптымізаваць кіраванне, ці спаборніцкім гульцом, які шукае кожную перавагу, CONFIGEN прадастаўляе інструменты, неабходныя для стварэння ідэальнага канфіга.",
+                dragDrop: "Drag & Drop",
+                dragDropDesc: "Інтуітыўнае візуальнае стварэнне канфігаў",
+                templatesDesc: "Гатовыя канфігі для розных стыляў гульні",
+                livePreview: "Прамы прадпрагляд",
+                livePreviewDesc: "Глядзіце свой канфіг па меры яго стварэння",
+                easyExport: "Просты экспарт",
+                easyExportDesc: "Экспарт і капіяванне канфіга ў адзін клік",
+                howToUse: "Як выкарыстоўваць CONFIGEN",
+                howToUseSteps: "1. Прагледзьце кампаненты ў левай панэлі<br>2. Перацягніце кампаненты ў працоўную вобласць<br>3. Наладзьце параметры па неабходнасці<br>4. Праглядайце канфіг у рэальным часе<br>5. Экспартуйце і выкарыстоўвайце ў CS2<br>6. Атрымлівайце задавальненне ад аптымізаванага геймплею!",
+                aboutGlobalyGenius: "Аб Globaly Genius",
+                aboutGG1: "CONFIGEN створаны Globaly Genius, які займаецца стварэннем магутных, зручных інструментаў для геймераў. Наша місія - зрабіць прасунутую гульнявую наладку даступнай для ўсіх.",
+                aboutGG2: "CONFIGEN цалкам бясплатны і заўсёды будзе заставацца такім. Мы верым у падтрымку гульнявога супольнасці якаснымі інструментамі.",
+                madeWithLove: "Зроблена з ❤️ і 🎮 для супольнасці CS2"
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        function applyTranslations(lang) {
+            currentLanguage = lang;
+            const t = translations[lang];
+            
+            // Update navigation
+            document.querySelectorAll('.nav-link[data-tab="builder"]').forEach(el => el.textContent = t.builder);
+            document.querySelectorAll('.nav-link[data-tab="templates"]').forEach(el => el.textContent = t.templates);
+            document.querySelectorAll('.nav-link[data-tab="guides"]').forEach(el => el.textContent = t.guides);
+            document.querySelectorAll('.nav-link[data-tab="about"]').forEach(el => el.textContent = t.about);
+            
+            // Update mobile navigation
+            document.querySelectorAll('.mobile-nav-item[data-tab="builder"] .mobile-nav-label').forEach(el => el.textContent = t.builder);
+            document.querySelectorAll('.mobile-nav-item[data-tab="templates"] .mobile-nav-label').forEach(el => el.textContent = t.templates);
+            document.querySelectorAll('.mobile-nav-item[data-tab="guides"] .mobile-nav-label').forEach(el => el.textContent = t.guides);
+            
+            // Update builder section
+            document.querySelector('.components-panel .panel-title').innerHTML = `<span>🧩</span> ${t.configComponents}`;
+            document.querySelector('.workspace-title').innerHTML = `<span>🛠️</span> ${t.configWorkspace}`;
+            document.querySelector('.preview-title').innerHTML = `<span>👁️</span> ${t.configPreview}`;
+            document.getElementById('exportConfig').innerHTML = `<span>📥</span> ${t.export}`;
+            document.getElementById('clearWorkspace').innerHTML = `<span>🗑️</span> ${t.clear}`;
+            document.getElementById('copyConfig').innerHTML = `<span>📋</span> ${t.copy}`;
+            
+            // Update empty workspace message
+            const emptyWorkspace = document.querySelector('.empty-workspace');
+            if (emptyWorkspace) {
+                emptyWorkspace.innerHTML = `
+                    <div class="empty-workspace-icon">⬇️</div>
+                    <h3>${t.dragComponentsHere}</h3>
+                    <p>${t.startBuilding}</p>
+                `;
+            }
+            
+            // Update templates section
+            document.querySelector('#templates .section-title').innerHTML = `<span>${t.configTemplates}</span> <span class="section-accent">${t.templates}</span>`;
+            document.querySelector('#templates .section-subtitle').textContent = t.startWithPrebuilt;
+            
+            document.querySelectorAll('.feature').forEach((feature, index) => {
+                const titles = [t.awpSpecialist, t.rifleMaster, t.entryFragger, t.supportPlayer];
+                const descriptions = [t.awpDescription, t.rifleDescription, t.entryDescription, t.supportDescription];
+                
+                if (index < titles.length) {
+                    feature.querySelector('.feature-title').textContent = titles[index];
+                    feature.querySelector('.feature-description').textContent = descriptions[index];
+                    feature.querySelector('.btn').textContent = t.loadTemplate;
+                }
+            });
+            
+            // Update guides section
+            document.querySelector('#guides .section-title').innerHTML = `<span>CS2 Config</span> <span class="section-accent">${t.guides}</span>`;
+            document.querySelector('#guides .section-subtitle').textContent = t.learnHowToCreate;
+            
+            const guideTexts = document.querySelectorAll('#guides .about-text');
+            if (guideTexts.length >= 2) {
+                guideTexts[0].querySelector('h3').textContent = t.understandingBinds;
+                guideTexts[0].querySelectorAll('p')[0].textContent = t.bindsDescription1;
+                guideTexts[0].querySelectorAll('p')[1].innerHTML = `<strong>${t.binds}</strong> ${t.bindsDescription2}`;
+                guideTexts[0].querySelectorAll('p')[2].innerHTML = `<strong>${t.aliases}</strong> ${t.bindsDescription3}`;
+                
+                guideTexts[0].querySelectorAll('.feature-title')[0].textContent = t.keyBinding;
+                guideTexts[0].querySelectorAll('.feature-description')[0].textContent = t.keyBindingDesc;
+                guideTexts[0].querySelectorAll('.feature-title')[1].textContent = t.aliasChains;
+                guideTexts[0].querySelectorAll('.feature-description')[1].textContent = t.aliasChainsDesc;
+                
+                guideTexts[1].querySelector('h3').textContent = t.bestPractices;
+                guideTexts[1].querySelectorAll('p')[0].innerHTML = t.bestPracticesList;
+                guideTexts[1].querySelectorAll('h3')[1].textContent = t.commonExamples;
+                guideTexts[1].querySelectorAll('p')[1].innerHTML = `<strong>${t.jumpThrowExample}</strong><br><code>alias "+jumpthrow" "+jump;-attack"<br>alias "-jumpthrow" "-jump"<br>bind "t" "+jumpthrow"</code>`;
+                guideTexts[1].querySelectorAll('p')[2].innerHTML = `<strong>${t.buyBindsExample}</strong><br><code>bind "F1" "buy ak47; buy m4a1_silencer"<br>bind "F2" "buy vesthelm; buy defuser"</code>`;
+                guideTexts[1].querySelectorAll('p')[3].innerHTML = `<strong>${t.practiceConfigExample}</strong><br><code>bind "n" "noclip"<br>bind "b" "bot_kick; bot_add ct; bot_add t"</code>`;
+            }
+            
+            // Update about section
+            document.querySelector('#about .section-title').innerHTML = `<span>${t.about}</span> <span class="section-accent">CONFIGEN</span>`;
+            document.querySelector('#about .section-subtitle').textContent = t.mostPowerfulBuilder;
+            
+            const aboutTexts = document.querySelectorAll('#about .about-text');
+            if (aboutTexts.length >= 2) {
+                aboutTexts[0].querySelector('h3').textContent = t.whatIsConfigen;
+                aboutTexts[0].querySelectorAll('p')[0].textContent = t.configenDescription1;
+                aboutTexts[0].querySelectorAll('p')[1].textContent = t.configenDescription2;
+                
+                aboutTexts[0].querySelectorAll('.feature-title')[0].textContent = t.dragDrop;
+                aboutTexts[0].querySelectorAll('.feature-description')[0].textContent = t.dragDropDesc;
+                aboutTexts[0].querySelectorAll('.feature-title')[1].textContent = t.templates;
+                aboutTexts[0].querySelectorAll('.feature-description')[1].textContent = t.templatesDesc;
+                aboutTexts[0].querySelectorAll('.feature-title')[2].textContent = t.livePreview;
+                aboutTexts[0].querySelectorAll('.feature-description')[2].textContent = t.livePreviewDesc;
+                aboutTexts[0].querySelectorAll('.feature-title')[3].textContent = t.easyExport;
+                aboutTexts[0].querySelectorAll('.feature-description')[3].textContent = t.easyExportDesc;
+                
+                aboutTexts[1].querySelector('h3').textContent = t.howToUse;
+                aboutTexts[1].querySelectorAll('p')[0].innerHTML = t.howToUseSteps;
+                aboutTexts[1].querySelectorAll('h3')[1].textContent = t.aboutGlobalyGenius;
+                aboutTexts[1].querySelectorAll('p')[1].textContent = t.aboutGG1;
+                aboutTexts[1].querySelectorAll('p')[2].textContent = t.aboutGG2;
+            }
+            
+            // Update footer
+            document.querySelector('.copyright').innerHTML = `© ${new Date().getFullYear()} CONFIGEN — CS2 Config Builder by Globaly Genius<br>${t.madeWithLove}`;
+            
+            // Update language toggle
+            const languageToggle = document.getElementById('languageToggle');
+            const flag = lang === 'en' ? '🇺🇸' : lang === 'ru' ? '🇷🇺' : '🇧🇾';
+            const text = lang === 'en' ? 'EN' : lang === 'ru' ? 'RU' : 'BY';
+            languageToggle.innerHTML = `<span class="language-flag">${flag}</span> <span>${text}</span>`;
+            
+            localStorage.setItem('language', lang);
+        }
+
+        // Initialize the application
+        function initApp() {
+            createComponentElements();
+            setupWorkspaceDropZone();
+            loadConfig();
+            
+            // Load saved language
+            const savedLanguage = localStorage.getItem('language') || 'en';
+            applyTranslations(savedLanguage);
+            
+            // Event listeners
+            exportConfigButton.addEventListener('click', exportConfig);
+            clearWorkspaceButton.addEventListener('click', clearWorkspace);
+            copyConfigButton.addEventListener('click', copyConfig);
+            
+            templateButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const templateName = this.getAttribute('data-template');
+                    loadTemplate(templateName);
+                });
+            });
+            
+            // Tab navigation
+            document.querySelectorAll('.nav-link, .mobile-nav-item, .footer-link').forEach(link => {
+                if (link.getAttribute('data-tab')) {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const tabId = this.getAttribute('data-tab');
+                        switchTab(tabId);
+                    });
+                }
+            });
+            
+            // Mobile Navigation
+            const navToggle = document.getElementById('navToggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            navToggle.addEventListener('click', () => {
+                const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+                navToggle.setAttribute('aria-expanded', !isExpanded);
+                navLinks.classList.toggle('active');
+            });
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+            
+            // Theme Toggle
+            const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+            mobileThemeToggle.addEventListener('click', () => {
+                const isDark = document.body.classList.contains('theme-dark');
+                
+                if (isDark) {
+                    document.body.classList.remove('theme-dark');
+                    document.body.classList.add('theme-light');
+                    mobileThemeToggle.querySelector('.mobile-nav-icon').textContent = '☀️';
+                    document.getElementById('themeToggle').innerHTML = '☀️';
+                } else {
+                    document.body.classList.remove('theme-light');
+                    document.body.classList.add('theme-dark');
+                    mobileThemeToggle.querySelector('.mobile-nav-icon').textContent = '🌙';
+                    document.getElementById('themeToggle').innerHTML = '🌙';
+                }
+                
+                localStorage.setItem('theme', isDark ? 'light' : 'dark');
+            });
+            
+            const themeToggle = document.getElementById('themeToggle');
+            themeToggle.addEventListener('click', () => {
+                const isDark = document.body.classList.contains('theme-dark');
+                
+                if (isDark) {
+                    document.body.classList.remove('theme-dark');
+                    document.body.classList.add('theme-light');
+                    themeToggle.innerHTML = '☀️';
+                    mobileThemeToggle.querySelector('.mobile-nav-icon').textContent = '☀️';
+                    themeToggle.setAttribute('aria-label', 'Switch to dark theme');
+                } else {
+                    document.body.classList.remove('theme-light');
+                    document.body.classList.add('theme-dark');
+                    themeToggle.innerHTML = '🌙';
+                    mobileThemeToggle.querySelector('.mobile-nav-icon').textContent = '🌙';
+                    themeToggle.setAttribute('aria-label', 'Switch to light theme');
+                }
+                
+                localStorage.setItem('theme', isDark ? 'light' : 'dark');
+            });
+            
+            // Language Selector
+            const languageToggle = document.getElementById('languageToggle');
+            const languageDropdown = document.getElementById('languageDropdown');
+            
+            languageToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                languageDropdown.classList.toggle('active');
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!languageToggle.contains(e.target) && !languageDropdown.contains(e.target)) {
+                    languageDropdown.classList.remove('active');
+                }
+            });
+            
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const lang = option.getAttribute('data-lang');
+                    applyTranslations(lang);
+                    languageDropdown.classList.remove('active');
+                });
+            });
+            
+            // Header scroll effect
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    header.classList.add('header-scrolled');
+                } else {
+                    header.classList.remove('header-scrolled');
+                }
+                
+                const scrollPercentage = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+                document.getElementById('loadingBar').style.width = `${scrollPercentage}%`;
+            });
+            
+            // Load saved theme
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'light') {
+                document.body.classList.remove('theme-dark');
+                document.body.classList.add('theme-light');
+                themeToggle.innerHTML = '☀️';
+                mobileThemeToggle.querySelector('.mobile-nav-icon').textContent = '☀️';
+                themeToggle.setAttribute('aria-label', 'Switch to dark theme');
+            }
+            
+            // Load saved tab
+            const savedTab = localStorage.getItem('activeTab') || 'builder';
+            switchTab(savedTab);
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set current year in copyright
+            document.querySelector('.copyright').innerHTML = document.querySelector('.copyright').innerHTML.replace('2025', new Date().getFullYear());
+            
+            // Initialize the app
+            initApp();
+            
+            // PWA Service Worker Registration
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then((registration) => {
+                            console.log('SW registered: ', registration);
+                        })
+                        .catch((registrationError) => {
+                            console.log('SW registration failed: ', registrationError);
+                        });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
